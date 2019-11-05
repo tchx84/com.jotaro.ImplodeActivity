@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Implode
+GenericName=Implode
+TryExec=sugarapp
+Exec=sugarapp
+Icon=com.jotaro.ImplodeActivity
+Type=Application
+Comment=Implode
+Terminal=false
+StartupNotify=true
+Categories=Education;
+MimeType=application/x-implode-activity;

@@ -1,0 +1,74 @@
+    {
+    "app-id": "com.jotaro.ImplodeActivity",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "3.28",
+    "sdk": "org.gnome.Sdk",
+    "build-options": {
+        "cflags": "-O2 -g",
+        "cxxflags": "-O2 -g",
+        "env": {
+            "V": "1",
+            "PERL5LIB": "/app/lib/perl/site_perl/5.22.1/",
+            "PYTHON_VERSION": "3"
+        }
+    },
+    "command": "sugarapp",
+    "finish-args": [
+        "--socket=x11",
+        "--socket=wayland",
+        "--socket=pulseaudio",
+        "--share=ipc",
+        "--device=dri",
+        "--filesystem=home",
+        "--filesystem=xdg-run/dconf",
+        "--filesystem=~/.config/dconf:ro",
+        "--talk-name=ca.desrt.dconf",
+        "--env=DCONF_USER_CONFIG_DIR=.config/dconf",
+        "--env=SUGAR_BUNDLE_ID=com.jotaro.ImplodeActivity",
+        "--env=SUGAR_BUNDLE_PATH=/app/share/sugar/activities/Implode.activity/"
+    ],
+    "cleanup": [
+        "/include",
+        "/lib/pkgconfig",
+        "/share/aclocal",
+        "/share/info",
+        "/share/man"
+    ],
+    "modules": [
+        "sugar-shared-modules/sugar/artwork.json",
+        "sugar-shared-modules/sugar/toolkit-gtk3.json",
+        "sugar-shared-modules/python/sugarapp.json",
+        {
+            "name": "implode",
+            "buildsystem": "simple",
+            "build-commands": [
+                "python${PYTHON_VERSION} setup.py install --prefix=${FLATPAK_DEST} --skip-install-desktop-file --skip-install-mime"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/sugarlabs/implode-activity",
+                    "branch": "master"
+                },
+                {
+                    "type": "patch",
+                    "path": "implode-sugarapp.patch"
+                },
+                {
+                    "type": "file",
+                    "path": "com.jotaro.ImplodeActivity.desktop"
+                },
+                {
+                    "type": "file",
+                    "path": "com.jotaro.ImplodeActivity.xml"
+                }
+            ],
+            "post-install": [
+                "install -D com.jotaro.ImplodeActivity.desktop /app/share/applications/com.jotaro.ImplodeActivity.desktop",
+                "install -D activity/activity-implode.svg /app/share/icons/hicolor/scalable/apps/com.jotaro.ImplodeActivity.svg",
+                "install -D com.jotaro.ImplodeActivity.xml /app/share/mime/packages/com.jotaro.ImplodeActivity.xml",
+                "install -D com.jotaro.ImplodeActivity.xml /app/share/sugar/activities/Implode.activity/activity/mimetypes.xml"
+            ]
+        }
+    ]
+}
